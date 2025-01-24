@@ -15,7 +15,7 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-          IP = "$(hostname -i)"
+          IP="$(hostname -i)"
           echo "CIDR=$(hostname -i)" >> $GITHUB_ENV
           echo "CIDR1=$(hostname -i)" >> $GITHUB_ENV
           echo "Running from here $CIDR $CIDR1 $IP"
