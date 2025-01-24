@@ -29,4 +29,5 @@ jobs:
           curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
           ibmcloud login -q --apikey ${{ secrets.IBMCLOUD_API_KEY }} -r eu-gb
           ibmcloud plugin install vpc-infrastructure
-          ibmcloud is security-group-rule-add --sg r018-544448d0-aef9-41c5-b875-7ce11c86a6cd --direction=inbound --protocol=tcp --port-min=22 --port-max=22 --remote $cidr --output JSON
+          test=$(ibmcloud is security-group-rule-add --sg r018-544448d0-aef9-41c5-b875-7ce11c86a6cd --direction=inbound --protocol=tcp --port-min=22 --port-max=22 --remote $cidr --output JSON| jq -r '.id')
+          echo $test
