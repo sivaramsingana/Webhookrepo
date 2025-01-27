@@ -30,4 +30,4 @@ jobs:
           ibmcloud login -q --apikey ${{ secrets.IBMCLOUD_API_KEY }} -r eu-gb
           ibmcloud plugin install vpc-infrastructure
           test=$(ibmcloud is security-group-rule-add --sg ${{ secrets.SG_ID }} --direction=inbound --protocol=tcp --port-min=22 --port-max=22 --remote=$cidr --output JSON | jq -r '.id')
-          echo $test
+          echo $test $cidr
