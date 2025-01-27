@@ -34,4 +34,9 @@ jobs:
           cidr="$(hostname -i)"
           echo $cidr
           test=$(ibmcloud is security-group-rule-add --sg ${{ secrets.SG_ID }} --direction=inbound --protocol=tcp --port-min=22 --port-max=22 --remote=$cidr --output JSON | jq -r '.id')
-          echo $test & ${cidr} & $IP
+          echo "this is the "$IP
+          echo $test "&" ${cidr} 
+          echo "RID=${test}" >> $GITHUB_OUTPUT
+      - name: Clean up
+        run: |
+          ibmcloud is security-group-rule-delete ${{ secrets.SG_ID }} ${{steps.test.outputs.RID}}
