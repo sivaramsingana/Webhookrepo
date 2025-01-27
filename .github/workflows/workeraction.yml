@@ -24,8 +24,9 @@ jobs:
         run: |
           cidr="$(hostname -i)"
           echo $cidr
-          echo "IP=${cidr}" >> $GITHUB_OUTPUT
+          echo "IP=${cidr}" >> $GITHUB_ENV
           echo "${{steps.cidr.outputs.IP}}"
+          echo $IP
       - name: install ibmcli and setup ibm login
         run: |
           curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
@@ -36,7 +37,8 @@ jobs:
           test=$(ibmcloud is security-group-rule-add --sg ${{ secrets.SG_ID }} --direction=inbound --protocol=tcp --port-min=22 --port-max=22 --remote=$cidr --output JSON | jq -r '.id')
           echo "this is the "$IP
           echo $test "&" ${cidr} 
-          echo "RID=${test}" >> $GITHUB_OUTPUT
+          echo "RID=${test}" >> $GITHUB_ENV
       - name: Clean up
         run: |
-          ibmcloud is security-group-rule-delete ${{ secrets.SG_ID }} ${{steps.test.outputs.RID}}
+          ibmcloud is security-group-rule-delete ${{ secrets.SG_ID }} $RID 
+          echo ${{steps.test.outputs.RID}}
