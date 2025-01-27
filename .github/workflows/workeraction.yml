@@ -36,5 +36,5 @@ jobs:
           echo "RID=${test}" >> $GITHUB_ENV
       - name: Clean up
         run: |
-          ibmcloud is security-group-rule-delete ${{ secrets.SG_ID }} $RID -y
+          ibmcloud is security-group-rule-delete ${{ secrets.SG_ID }} $RID -f
           echo ${{steps.test.outputs.RID}}
