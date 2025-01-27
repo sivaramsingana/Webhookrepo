@@ -25,6 +25,7 @@ jobs:
           cidr="$(hostname -i)"
           echo $cidr
           echo "IP=${cidr}" >> $GITHUB_OUTPUT
+          echo "${{steps.cidr.outputs.IP}}"
       - name: install ibmcli and setup ibm login
         run: |
           curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
@@ -32,5 +33,5 @@ jobs:
           ibmcloud plugin install vpc-infrastructure
           cidr="$(hostname -i)"
           echo $cidr
-          test=$(ibmcloud is security-group-rule-add --sg ${{ secrets.SG_ID }} --direction=inbound --protocol=tcp --port-min=22 --port-max=22 --remote ${{steps.cidr.outputs.IP}} --output JSON | jq -r '.id')
+          test=$(ibmcloud is security-group-rule-add --sg ${{ secrets.SG_ID }} --direction=inbound --protocol=tcp --port-min=22 --port-max=22 --remote=$cidr --output JSON | jq -r '.id')
           echo $test & ${cidr} & $IP
