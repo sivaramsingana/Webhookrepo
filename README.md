@@ -5,3 +5,4 @@ Use this for testing builder using docker file.
 
 *****************
 Can be useful for both manual and automatic builds
+Created new github actions for vsi login for quay builder test.
