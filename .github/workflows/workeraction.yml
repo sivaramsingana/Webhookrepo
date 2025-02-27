@@ -31,7 +31,7 @@ jobs:
           ibmcloud login -q --apikey ${{ secrets.IBMCLOUD_API_KEY }} -r eu-gb
           ibmcloud plugin install vpc-infrastructure
           cidr="$(hostname -i)"
-          test=$(ibmcloud is security-group-rule-add --sg ${{ secrets.SG_ID }} --direction=inbound --protocol=tcp --port-min=22 --port-max=22 --remote=$cidr --output JSON | jq -r '.id')
+          test=$(ibmcloud is security-group-rule-add --sg ${{ secrets.SG_ID }} --direction=inbound --protocol=tcp --port-min=22 --port-max=22 --remote=$cidr --source ${{ secrets.BUILDER_S390X_SSH_HOST }} --output JSON | jq -r '.id')
           echo $test "&" ${cidr} 
           echo "RID=${test}" >> $GITHUB_ENV
           
