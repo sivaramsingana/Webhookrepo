@@ -15,10 +15,8 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-          IP="$(hostname -i)"
-          echo "CIDR=$(hostname -i)" >> $GITHUB_ENV
-          echo "CIDR1=$(hostname -i)" >> $GITHUB_ENV
-          echo "Running from here $CIDR $CIDR1 $IP"
+          IP="$(ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://')"
+          echo $IP
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Get CIDR for actions
         run: |
@@ -57,7 +55,6 @@ jobs:
             User wfuser
             IdentityFile "~/.ssh/id_builder_s390x"
           END
-          sleep 40
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
