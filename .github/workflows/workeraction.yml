@@ -60,7 +60,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
         with:
-          platforms: linux/amd64
+          platforms: linux/s390x
           append: |
             - endpoint: ssh://builder-s390x
               platforms: linux/s390x
