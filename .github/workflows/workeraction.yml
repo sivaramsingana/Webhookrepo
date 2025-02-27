@@ -34,6 +34,36 @@ jobs:
           test=$(ibmcloud is security-group-rule-add --sg ${{ secrets.SG_ID }} --direction=inbound --protocol=tcp --port-min=22 --port-max=22 --remote=$cidr --output JSON | jq -r '.id')
           echo $test "&" ${cidr} 
           echo "RID=${test}" >> $GITHUB_ENV
+          
+      - name: Setup SSH config for builders
+        env:
+          BUILDER_S390X_SSH_HOST: ${{ secrets.BUILDER_S390X_SSH_HOST }}
+          BUILDER_S390X_SSH_KEY: ${{ secrets.BUILDER_S390X_SSH_KEY }}
+        run: |
+          mkdir ~/.ssh
+          chmod 700 ~/.ssh
+
+          touch ~/.ssh/id_builder_s390x
+          chmod 600 ~/.ssh/id_builder_s390x
+          echo "$BUILDER_S390X_SSH_KEY" > ~/.ssh/id_builder_s390x
+
+          touch ~/.ssh/config
+          chmod 600 ~/.ssh/config
+          cat >~/.ssh/config <<END
+          Host builder-s390x
+            StrictHostKeyChecking no
+            HostName $BUILDER_S390X_SSH_HOST
+            User wfuser
+            IdentityFile "~/.ssh/id_builder_s390x"
+          END
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          platforms: linux/amd64
+          append: |
+            - endpoint: ssh://builder-s390x
+              platforms: linux/s390x
       - name: Clean up
         run: |
           ibmcloud is security-group-rule-delete ${{ secrets.SG_ID }} $RID -f
