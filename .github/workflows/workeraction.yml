@@ -15,8 +15,9 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-          IP="$(ifconfig | grep -B1 "inet addr" |awk '{ if ( $1 == "inet" ) { print $2 } else if ( $2 == "Link" ) { printf "%s:" ,$1 } }' |awk -F: '{ print $1 ": " $3 }')"
-          echo $IP
+          IP="$(ip addr show)"
+          test="$(ifconfig)"
+          echo $IP $test
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Get CIDR for actions
         run: |
