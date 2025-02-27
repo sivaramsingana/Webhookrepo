@@ -31,7 +31,7 @@ jobs:
           curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
           ibmcloud login -q --apikey ${{ secrets.IBMCLOUD_API_KEY }} -r eu-gb
           ibmcloud plugin install vpc-infrastructure
-          cidr="$(hostname -i)"
+          cidr=$(curl -s https://api.ipify.org)
           test=$(ibmcloud is security-group-rule-add --sg ${{ secrets.SG_ID }} --direction=inbound --protocol=tcp --port-min=22 --port-max=22 --remote=$cidr --output JSON | jq -r '.id')
           echo $test "&" ${cidr} 
           echo "RID=${test}" >> $GITHUB_ENV
