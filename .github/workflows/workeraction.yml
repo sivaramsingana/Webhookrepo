@@ -15,7 +15,7 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-          IP="$(ip addr | awk '/inet / {sub(/\/.*/, "", $2); print $2}')"
+          IP="$(dig +short myip.opendns.com @resolver1.opendns.com)"
           echo $IP
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Get CIDR for actions
