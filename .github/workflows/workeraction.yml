@@ -15,7 +15,7 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-          apt-get install network-manager
+          apt-get install network-manager -y
           IP="$(ip addr show)"
           test="$(nmcli -p device show)"
           echo $IP $test
