@@ -25,6 +25,7 @@ jobs:
           cidr=$(curl -s https://api.ipify.org)
           echo "IP=${cidr}" >> $GITHUB_ENV
           echo $IP
+          echo $cidr
       - name: install ibmcli and setup ibm login
         run: |
           curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
