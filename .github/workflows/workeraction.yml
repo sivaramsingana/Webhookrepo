@@ -65,7 +65,7 @@ jobs:
             - endpoint: ssh://builder-s390x
               platforms: linux/s390x
       - name: Clean up
-        continue-on-error: true
+        if: success() || failure()
         run: |
           ibmcloud is security-group-rule-delete ${{ secrets.SG_ID }} $RID -f
           echo ${{steps.test.outputs.RID}}
