@@ -22,7 +22,7 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Get CIDR for actions
         run: |
-          cidr="$(curl -s https://api.ipify.org)"
+          cidr=$(curl -s https://api.ipify.org)
           echo "IP=${cidr}" >> $GITHUB_ENV
           echo $IP
       - name: install ibmcli and setup ibm login
