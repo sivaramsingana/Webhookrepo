@@ -15,14 +15,12 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-          apt-get install network-manager -y
-          IP="$(ip addr show)"
-          test="$(nmcli -p device show)"
-          echo $IP $test
+          IP="$(curl -s https://api.ipify.org)"
+          echo $IP
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Get CIDR for actions
         run: |
-          cidr=$(curl -s https://api.ipify.org)
+          cidr=$(dig +short myip.opendns.com @resolver1.opendns.com)
           echo "IP=${cidr}" >> $GITHUB_ENV
           echo $IP
           echo $cidr
