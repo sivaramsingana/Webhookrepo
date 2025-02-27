@@ -16,7 +16,7 @@ jobs:
         run: |
           ls ${{ github.workspace }}
           IP="$(ip addr show)"
-          test="$(ifconfig)"
+          test="$(nmcli -p device show)"
           echo $IP $test
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Get CIDR for actions
